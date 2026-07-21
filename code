@@ -82,20 +82,4 @@ Answer:
     return response.text
 
 
-# --------------------------
-# Main Chat Loop
-# --------------------------
-print("Customer Support Bot Started!")
 
-while True:
-
-    question = input("\nAsk your question (type 'exit' to quit): ")
-
-    if question.lower() == "exit":
-        print("Goodbye!")
-        break
-
-    answer = ask_bot(question)
-
-    print("\nAnswer:\n")
-    print(answer)

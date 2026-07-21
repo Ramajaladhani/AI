@@ -1,0 +1,101 @@
+import faiss
+import pickle
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from google import genai
+
+# --------------------------
+# Gemini API
+# --------------------------
+client = genai.Client(
+    api_key="A"
+)
+
+# --------------------------
+# Load Embedding Model
+# --------------------------
+embedding_model = SentenceTransformer(
+    "sentence-transformers/all-MiniLM-L6-v2"
+)
+
+# --------------------------
+# Load FAISS Index
+# --------------------------
+index = faiss.read_index("faiss_index.bin")
+
+# --------------------------
+# Load Documents
+# --------------------------
+with open("documents.pkl", "rb") as f:
+    documents = pickle.load(f)
+
+# --------------------------
+# Ask Bot
+# --------------------------
+def ask_bot(question):
+
+    # Convert question into embedding
+    question_embedding = embedding_model.encode([question])
+
+    # Search top 3 documents
+    distances, locations = index.search(
+        np.array(question_embedding).astype("float32"),
+        k=3
+    )
+
+    print("\n==========================")
+    print("Retrieved Documents")
+    print("==========================")
+
+    context = ""
+
+    for i in locations[0]:
+        print(documents[i])
+        context += documents[i] + "\n"
+
+    print("\nSimilarity Distance:")
+    print(distances)
+
+    # If nothing is relevant
+    if distances[0][0] > 1.5:
+        return "Sorry, I couldn't find that information."
+
+    prompt = f"""
+You are an AI Customer Support Assistant.
+
+Answer ONLY using the information below.
+
+Context:
+{context}
+
+Question:
+{question}
+
+Answer:
+"""
+
+    response = client.models.generate_content(
+        model="gemini-flash-latest",
+        contents=prompt
+    )
+
+    return response.text
+
+
+# --------------------------
+# Main Chat Loop
+# --------------------------
+print("Customer Support Bot Started!")
+
+while True:
+
+    question = input("\nAsk your question (type 'exit' to quit): ")
+
+    if question.lower() == "exit":
+        print("Goodbye!")
+        break
+
+    answer = ask_bot(question)
+
+    print("\nAnswer:\n")
+    print(answer)

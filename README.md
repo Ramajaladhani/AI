@@ -80,28 +80,6 @@ AI-Customer-Support-Chatbot-RAG/
 
 ---
 
-## 💻 Installation
-
-Clone the repository
-
-git clone https://github.com/yourusername/AI-Customer-Support-Chatbot-RAG.git
-
-Move into the project folder
-
-cd AI-Customer-Support-Chatbot-RAG
-
-Install dependencies
-
-pip install -r requirements.txt
-
-Add your Gemini API Key as an environment variable.
-
-Run the application
-
-streamlit run app.py
-
----
-
 ## 🎯 Future Improvements
 
 * PDF Document Upload
@@ -113,21 +91,7 @@ streamlit run app.py
 * Docker Deployment
 * Cloud Deployment
 
----
-
-## 📷 Demo
-
-Add screenshots of your chatbot interface in the **screenshots** folder.
-
----
-
-## 👩‍💻 Author
-
-**Rama Jaladhani**
-
-M.Sc. Data Science
-
-Aspiring Data Analyst & Generative AI Engineer
 
 
-⭐ If you found this project useful, please consider giving it a Star!
+
+lease consider giving it a Star!
